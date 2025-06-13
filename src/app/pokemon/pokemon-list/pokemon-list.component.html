@@ -1,0 +1,61 @@
+<!-- 🔍 Champ de recherche -->
+<div class="container mb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <input 
+      id="search"
+      type="text"
+      name="searchTerm"
+      class="form-control"
+      placeholder="Rechercher un Pokémon..."
+      #searchField
+      [value]="searchTerm()"
+      (input)="searchTerm.set(searchField.value)
+      "
+      />
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2">
+    @for (un_pokedex of  pokemonsListFiltre(); track un_pokedex.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm p-2 d-flex flex-row align-items-center" appPokemonBorder [pokemonType]="un_pokedex.type[0]" >
+
+          <!-- Image à gauche -->
+          <img [src]="un_pokedex.picture" [alt]="un_pokedex.name"
+               class="img-fluid"
+               style="width: 80px; height: 80px; object-fit: contain; margin-right: 10px;" />
+
+          <!-- Infos à droite -->
+          <div class="flex-grow-1">
+            <h6 class="card-title text-primary mb-1">{{ un_pokedex.name }}</h6>
+            <p class="mb-1"><strong>Taille:</strong> {{ size(un_pokedex) }}</p>
+            <p class="mb-1"><strong>Vie:</strong> {{ un_pokedex.life }}</p>
+            <p class="mb-1"><strong>Dommage:</strong> {{ un_pokedex.domage }}</p>
+            <p class="mb-1"><strong>Type:</strong> {{ un_pokedex.type }}</p>
+            <p class="mb-2"><strong>Date:</strong> {{ un_pokedex.created | date: 'dd/MM/yyyy' }}</p>
+
+            <!-- Boutons -->
+            <div class="d-flex justify-content-start gap-1">
+              <button class="btn btn-sm btn-success" (click)="incrementerlife(un_pokedex)" [disabled]="un_pokedex.life >= 30">+</button>
+              <button class="btn btn-sm btn-danger" (click)="decrementerlife(un_pokedex)" [disabled]="un_pokedex.life <= 10">-</button>
+               </div>
+           <P class="card-text">
+           <a class="text small text-muted"
+           [routerLink]="['/pokemons', un_pokedex.id]"
+           >Voir</a>
+           </P>
+      
+          </div>
+
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <div class="alert alert-warning text-center">Aucun Pokémon</div>
+      </div>
+    }
+  </div>
+</div>
