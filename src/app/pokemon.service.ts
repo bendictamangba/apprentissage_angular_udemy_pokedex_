@@ -11,11 +11,11 @@ export class PokemonService {
     return POKEMON_LIST;
   }
 
- getPokemonById(id: number): Pokemon {
+ getPokemonById(id: number): Pokemon | undefined {
   const pokemon = POKEMON_LIST.find(pokemon => pokemon.id === id);
-  if (!pokemon) {
-    throw new Error('Pokemon introuvable');
-  }
+  // if (!pokemon) { // Plus besoin de lever une erreur ici
+  //   return undefined; // find retourne déjà undefined si non trouvé
+  // }
   return pokemon;
 }
 

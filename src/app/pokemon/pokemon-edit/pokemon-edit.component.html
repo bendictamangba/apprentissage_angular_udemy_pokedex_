@@ -1,0 +1,129 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="row g-0">
+      <div class="col-md-4 d-flex align-items-center justify-content-center bg-light">
+        <img
+          [src]="pokemon()?.picture"
+          class="img-fluid rounded-start"
+          [alt]="pokemon()?.name"
+        />
+      </div>
+
+      <div class="col-md-8">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="card-body">
+            <h2 class="card-title">{{ pokemon()?.name }}</h2>
+
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th scope="row">Name</th>
+                  <td>
+                    <input
+                      formControlName="name"
+                      type="text"
+                      class="form-control"
+                      placeholder="Nom du Pokémon"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Points de vie</th>
+                  <td>
+                    <div class="input-group">
+                      <button class="btn btn-outline-secondary" disabled>-</button>
+                      <input
+                        formControlName="life"
+                        type="number"
+                        class="form-control text-center"
+                      />
+                      <button class="btn btn-outline-secondary" disabled>+</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Dégâts</th>
+                  <td>
+                    <div class="input-group">
+                      <button class="btn btn-outline-secondary" disabled>-</button>
+                      <input
+                        formControlName="domage"
+                        type="number"
+                        class="form-control text-center"
+                      />
+                      <button class="btn btn-outline-secondary" disabled>+</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Types</th>
+                  <td>
+                    <!-- Affichage des types sélectionnés -->
+                    <div class="mb-3">
+                      @for (type of pokemonTypeList.controls; track type; let index = $index) {
+                        <button
+                          type="button"
+                          class="btn btn-secondary btn-sm rounded-pill me-2"
+                          (click)="pokemonTypeList.removeAt(index)"
+                            [style.backgroundColor]="getPokemonColor(type.value)"
+                            [style.color]="getChipTextColor(type.value)"
+
+                        >
+                          {{ type.value }} <span class="badge"
+                           [style.color]="getChipTextColor(type.value)"
+
+                      
+                          >x</span>
+                        </button>
+                      }
+                    </div>
+
+                    <!-- Choix des types via checkbox -->
+                    <div class="row mt-3">
+                      @for (type of pokemonService.getPokemonTypeList(); track type) {
+                        <div class="col-md-4">
+                          <div class="form-check">
+                            <input
+                              #checkbox
+                              type="checkbox"
+                              class="form-check-input"
+                              [id]="type"
+                              [checked]="isPokemonTypeSelected(type)"
+                              (change)="onPokemonTypeChange(type, checkbox.checked)"
+                             
+                            >
+                            <label class="form-check-label" [for]="type">
+                              {{ type }}
+                            </label>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button
+                class="btn btn-link text-decoration-none text-warning"
+                [routerLink]="['/pokemons', pokemon()?.id]"
+              >
+                RETOUR
+              </button>
+              <button
+                type="submit"
+                class="btn btn-link text-decoration-none text-warning"
+              >
+                SAUVEGARDER LES CHANGEMENTS
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
