@@ -17,6 +17,22 @@
     </div>
   </div>
 </div>
+
+<!-- 🔘 Filtres par type -->
+<div class="container mb-4 text-center">
+  <div class="d-flex flex-wrap justify-content-center gap-2">
+    <button 
+      *ngFor="let type of typeList()"
+      (click)="filterByType(type)"
+      class="btn btn-outline-primary"
+      [class.active]="typeSelected() === type"
+    >
+      {{ type }}
+    </button>
+  </div>
+</div>
+
+
  <div class=" bottom end-0 m-3">
   <button type="button" class="btn btn-s btn-success rounded-circle btn-lg"
   [routerLink]="['/pokemons', 'add']"
