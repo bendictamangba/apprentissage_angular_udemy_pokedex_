@@ -91,6 +91,30 @@
         "Normal"
       ],
       "created": "2024-08-16T00:00:00Z"
+    },
+    {
+      "name": "nouveau",
+      "picture": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/100.png",
+      "life": 10,
+      "domage": 1,
+      "types": [
+        "Normal",
+        "Eau"
+      ],
+      "created": "2025-06-15T12:44:32.764Z",
+      "id": 11
+    },
+    {
+      "name": "kko",
+      "picture": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/100.png",
+      "life": 10,
+      "domage": 1,
+      "types": [
+        "Normal",
+        "Eau"
+      ],
+      "created": "2025-06-15T12:45:32.706Z",
+      "id": 12
     }
   ]
 }

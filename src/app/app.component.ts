@@ -9,7 +9,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [RouterOutlet,RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers:[PokemonService]
+  providers: []
 })
 export class AppComponent {
 

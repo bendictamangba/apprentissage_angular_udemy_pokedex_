@@ -7,19 +7,37 @@ import { PokemonEditComponent } from './pokemon/pokemon-edit/pokemon-edit.compon
 import { provideHttpClient } from '@angular/common/http';
 import { AuthGward } from './core/auth/auth.gward';
 import { LoginComponent } from './login/login.component';
+import { PokemonAddComponent } from './pokemon/pokemon-add/pokemon-add.component';
+import { environment } from '../environments/environment';
+import { PokemonLocalStorageService } from './srcpokemon-local-storage.service';
+import { PokemonJSONServerService } from './pokemon-json-server.service';
+import { PokemonService } from './pokemon.service';
 
+export function pokemonServiceFactory(): PokemonService {
+  return environment.production
+    ? new PokemonLocalStorageService()
+    : new PokemonJSONServerService();
+}
 
 const routes : Routes = [
 
   {
     path:'login',
     component:LoginComponent,
-    title:'login'
+    title:'connexion'
   },
+
   {
   path: 'pokemons',
   canActivateChild:[AuthGward],
   children:[
+
+    {path:'add',
+   component: PokemonAddComponent,
+    title:'ajout ',
+  
+    
+  },
     {path:'edit/:id',
    component: PokemonEditComponent, 
    title:'edition',
@@ -30,6 +48,12 @@ const routes : Routes = [
 {path:':id',
    component: PokemonProfileComponent,
     title:'pokémons',
+  
+    
+  },
+  {path:'add',
+   component: PokemonAddComponent,
+    title:'ajout',
   
     
   },
@@ -55,6 +79,9 @@ export const appConfig: ApplicationConfig = {
   provideHttpClient(),
 
 
-
+  {
+      provide: PokemonService,
+      useFactory: pokemonServiceFactory,
+    },
   ]
 };
