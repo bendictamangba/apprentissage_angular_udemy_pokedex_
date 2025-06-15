@@ -2,29 +2,37 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { PokemonService } from '../../pokemon.service';
 import { Pokemon } from '../../pokemon.models';
 import { PokemonBorderDirective } from '../../pokemon-border.directive';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-pokemon-list',
-  imports: [PokemonBorderDirective, DatePipe, RouterLink],
+
+  imports: [ DatePipe, RouterLink],
   templateUrl: './pokemon-list.component.html',
-  styles: ``
+  styles: `.pokemon-card{cursor:pointer}`
 })
 export class PokemonListComponent {
 
   readonly #pokemonService = inject (PokemonService);
+  readonly pokemonList = toSignal(this.#pokemonService.getPokemonList(), {
+    initialValue: [],
+  });
   readonly searchTerm = signal ('');
+
   readonly pokemonsListFiltre = computed (()=>{
    const searchTerm = this.searchTerm();
-   const pokemon_list = this.pokemon_list();
-   return pokemon_list.filter((pokemon) => 
+   const pokemonList = this.pokemonList();
+   
+   return pokemonList.filter((pokemon) => 
     pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()));
    
   
   })
   
-
+readonly loading = computed(()=> this.pokemonList().length ==0);
 
   // name = 'Pikachu';
   // life =21;
@@ -73,12 +81,6 @@ export class PokemonListComponent {
 pokemon_list = signal( this.#pokemonService.getPokemonList());
 
 
-incrementerlife(un_pokemon:Pokemon){ 
-  un_pokemon.life++;
-}
-decrementerlife(un_pokemon:Pokemon){
-  un_pokemon.life--;
-}
 
  //life = signal(21);
 

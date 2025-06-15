@@ -7,7 +7,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png',
     domage:5,
-    type:['Feu'],
+    types:['Feu'],
     created: new Date(),
 },
 {
@@ -16,7 +16,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/005.png',
     domage:5,
-    type:['Eau'],
+    types:['Eau'],
     created: new Date(),
 },
 {
@@ -25,7 +25,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/007.png',
     domage:5,
-    type:['plante', ],
+    types:['plante', ],
     created: new Date(),
 },
 {
@@ -34,7 +34,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/008.png',
     domage:5,
-    type:['Electrik'],
+    types:['Electrik'],
     created: new Date(),
 },
 {
@@ -43,7 +43,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/009.png',
     domage:5,
-    type:['plante'],
+    types:['plante'],
     created: new Date(),
 },
 {
@@ -52,7 +52,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png',
     domage:5,
-    type:['Vol'],
+    types:['Vol'],
     created: new Date(),
 },
 {
@@ -61,7 +61,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/003.png',
     domage:5,
-    type:['Fée'],
+    types:['Fée'],
     created: new Date(),
 },
 {
@@ -70,7 +70,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/010.png',
     domage:5,
-    type:['Insecte'],
+    types:['Insecte'],
     created: new Date(),
 },
 {
@@ -79,7 +79,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/015.png',
     domage:5,
-    type:['Poison'],
+    types:['Poison'],
     created: new Date(),
 },
 {
@@ -88,7 +88,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/019.png',
     domage:5,
-    type:['plante'],
+    types:['plante'],
     created: new Date(),
 },
 {
@@ -97,7 +97,7 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/030.png',
     domage:5,
-    type:['Fée'],
+    types:['Fée'],
     created: new Date(),
 },
 {
@@ -106,6 +106,6 @@ export const POKEMON_LIST: PokemonList =[
       life:25,
     picture:'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/021.png',
     domage:5,
-    type:['Electrik'],
+    types:['Electrik'],
     created: new Date(),
 }]

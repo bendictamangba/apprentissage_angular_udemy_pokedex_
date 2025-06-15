@@ -1,16 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 
 import { PokemonService } from '../../pokemon.service';
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import { Pokemon, getPokemonColor } from '../../pokemon.models'; // Importer le type Pokemon
-import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import {FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { POKEMON_RULES, getPokemonColor } from '../../pokemon.models'; 
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+
 @Component({
   selector: 'app-pokemon-edit',
-    standalone: true, 
-  imports: [
-             
+  imports: [   
     ReactiveFormsModule,  
-    RouterLink,           
+    RouterLink,    
+    
+           
   ],
   templateUrl: './pokemon-edit.component.html',
   styles: ``,
@@ -18,55 +21,110 @@ import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 
 
 export class PokemonEditComponent {
-
+    readonly router = inject(Router);
 
   readonly route = inject(ActivatedRoute);
   readonly pokemonService = inject(PokemonService);
-  readonly pokemonId = signal(
-    Number(this.route.snapshot.paramMap.get('id'))
-  ).asReadonly();
-  // Typer explicitement le signal pour plus de clarté
-  readonly pokemon = signal<Pokemon | undefined>(
-    this.pokemonService.getPokemonById(this.pokemonId())
-  ).asReadonly();
+  readonly pokemonId = Number(
+    this.route.snapshot.paramMap.get('id'));  
+  readonly pokemon = toSignal(
+    this.pokemonService.getPokemonById(this.pokemonId)
+  );
 
-get pokemonLink(): any[] {
-  return ['/pokemons', this.pokemon()?.id];
+  readonly POKEMON_RULES = POKEMON_RULES;
+
+
+  readonly form = new FormGroup({
+  name: new FormControl('',
+    [
+      Validators.required,
+      Validators.minLength(POKEMON_RULES.MIN_NAME),
+      Validators.maxLength(POKEMON_RULES.MAX_NAME),
+      Validators.pattern(POKEMON_RULES.NAME_PATTERN)
+    ]
+  ),
+ 
+ life: new FormControl(),
+  domage: new FormControl(),
+  types: new FormArray([],
+  
+    [Validators.required,
+      Validators.maxLength(POKEMON_RULES.MAX_TYPES),
+      Validators.minLength(POKEMON_RULES.MIN_TYPES)
+    ]
+  ),
+  });
+
+  constructor(){
+   effect(()=>{
+    const pokemon = this.pokemon();
+    if(pokemon){
+      this.form.patchValue({
+        name: pokemon.name,
+        life: pokemon.life,
+        domage: pokemon.domage,
+
+      });
+      pokemon.types.forEach((types) => {
+        this.pokemonTypeList.push(new FormControl(types));
+      });
+    
+    }
+  });
 }
 
 
+  
 
 
-
-
-
-
-
-  readonly form: FormGroup; // Déclarer le FormGroup ici
-
-  constructor() {
-    const currentPokemon = this.pokemon();
-
-    // Initialiser le formulaire en vérifiant si currentPokemon existe
-    this.form = new FormGroup({
-      name: new FormControl(currentPokemon ? currentPokemon.name : ''),
-      life: new FormControl(currentPokemon ? currentPokemon.life : 0),
-      domage: new FormControl(currentPokemon ? currentPokemon.domage : 0),
-      type: new FormArray(
-        currentPokemon
-          ? currentPokemon.type.map((type) => new FormControl(type))
-          : []
-      ),
-    });
-   
-  console.log('Pokemon chargé :', currentPokemon);
-
-  }
 
   get pokemonTypeList() : FormArray{
-    return this.form.get('type') as FormArray;
+    return this.form.get('types') as FormArray;
 
     }
+
+  get pokemonName() : FormControl{
+    return this.form.get('name') as FormControl;
+
+    }
+
+    get pokemonLife() : FormControl{
+    return this.form.get('life') as FormControl;
+
+    }
+    incrementeLife(){
+      const newValue = this.pokemonLife.value + 1;
+      this.pokemonLife.setValue(newValue);
+
+    }
+
+      decrementeLife(){
+      const newValue = this.pokemonLife.value - 1;
+      this.pokemonLife.setValue(newValue);
+
+    }
+
+    incrementeDomage(){
+      const newValue = this.pokemonLife.value + 1;
+      this.pokemonDomage.setValue(newValue);
+
+    }
+
+      decrementeDomage(){
+      const newValue = this.pokemonLife.value - 1;
+      this.pokemonDomage.setValue(newValue);
+
+    }
+
+    get pokemonDomage() : FormControl{
+    return this.form.get('domage') as FormControl;
+
+    }
+
+
+
+
+
 
 
 isPokemonTypeSelected(type: string): boolean {
@@ -77,22 +135,43 @@ isPokemonTypeSelected(type: string): boolean {
   }
 
   
-onPokemonTypeChange(type: string, isChecked: boolean) {
+onPokemonTypeChange(types: string, isChecked: boolean) {
     if (isChecked) {
-      const control = new FormControl(type);
+      const control = new FormControl(types);
       this.pokemonTypeList.push(control);
       } else {
         const index = this.pokemonTypeList.controls
        .map((control) => control.value)
-       .indexOf(type);
+       .indexOf(types);
        this.pokemonTypeList.removeAt(index);
     }
   }
 
 
 onSubmit(){
-  console.log(this.form.value);
+ const isFormValid = this.form.valid;
+ const pokemon = this.pokemon();
+
+ if (isFormValid && pokemon){
+
+  const updatePokemon = {
+    ...pokemon,
+    name: this.pokemonName.value,
+    life: this.pokemonLife.value,
+    domage: this.pokemonDomage.value,
+    types: this.pokemonTypeList.value,
+  };
+
+  this.pokemonService.updatePokemon(updatePokemon).subscribe(()=>{
+    this.router.navigate(['/pokemons', pokemon.id]);
+  }
+  );
+ }
 }
+
+
+
+
 
  getPokemonColor(type: string): string {
     return getPokemonColor(type);
@@ -101,9 +180,9 @@ onSubmit(){
 
 
 
-getChipTextColor (type: string):'black' | 'white'{
+getChipTextColor (types: string):'black' | 'white'{
 
-  return type === 'Electrik' ? 'black' : 'white';
+  return types === 'Electrik' ? 'black' : 'white';
 
 }
 

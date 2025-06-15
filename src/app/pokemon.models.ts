@@ -5,7 +5,7 @@ export  interface Pokemon{
     picture:string;
     life:number;
     domage:number;
-    type:[string] |[ string, string] | [string, string, string];
+    types:[string] |[ string, string] | [string, string, string];
     created:Date;
 
 }
