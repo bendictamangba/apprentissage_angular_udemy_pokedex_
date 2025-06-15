@@ -6,10 +6,17 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PokemonEditComponent } from './pokemon/pokemon-edit/pokemon-edit.component';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthGward } from './core/auth/auth.gward';
+import { LoginComponent } from './login/login.component';
 
 
 const routes : Routes = [
-{
+
+  {
+    path:'login',
+    component:LoginComponent,
+    title:'login'
+  },
+  {
   path: 'pokemons',
   canActivateChild:[AuthGward],
   children:[
